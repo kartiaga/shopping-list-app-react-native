@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { View, Image, Text, TouchableOpacity, FlatList} from "react-native"
+import { useEffect, useState } from "react"
+import { View, Image, Text, TouchableOpacity, FlatList, Alert} from "react-native"
 
 import { Item } from "@/components/Item"
 import { Input } from "@/components/Input"
@@ -8,24 +8,50 @@ import { Filter } from "@/components/Filter"
 
 import { styles } from "./styles"
 import { FilterStatus } from "@/types/FilterStatus"
+import { itemsStorage, ItemStorage } from "@/storage/itemsStorage"
 
 const FILTER_STATUS: FilterStatus[] = [FilterStatus.PENDING, FilterStatus.DONE]
-const ITEMS = [
-  { id: "1", status: FilterStatus.DONE, description: "Comprar um pacote de café"},
-  { id: "2", status: FilterStatus.PENDING, description: "3 Pacotes de mararrão"},
-  { id: "3", status: FilterStatus.PENDING, description: "2 Cebolas"},
-]
 
 export function Home() {
   const [filter, setFilter] = useState(FilterStatus.PENDING)
+  let [description, setDescription] = useState("")
+  const [items, setItems] = useState<ItemStorage[]>([])
 
+  async function handleAdd(){
+    if (!description.trim()){
+      return Alert.alert("Adicionar", "Informe a descrição para adicionar")
+    }
+
+    const newItem = {
+      id: Math.random().toString(36).substring(2),
+      description,
+      status: FilterStatus.PENDING
+    }
+    
+    await itemsStorage.add(newItem)
+    await getItems()
+  }
+
+  async function getItems() {
+    try {
+      const response = await itemsStorage.get()
+      setItems(response)
+    } catch (error) {
+      console.log(error)
+      Alert.alert("Erro", "Não foi possível filtrar os itens.")
+    }
+  }
+
+  useEffect(() => {
+    getItems()
+  }, [])
   return (
     <View style={styles.container}>
       <Image source={require("@/assets/logo.png")} style={styles.logo}/>
 
       <View style={styles.form}>
-        <Input placeholder="Nome completo"/>
-        <Button title="Adicionar" />
+        <Input placeholder="Nome completo" onChangeText={setDescription}/>
+        <Button title="Adicionar" onPress={handleAdd} />
       </View>
 
       <View style={styles.content}>
@@ -45,7 +71,7 @@ export function Home() {
         </View>
 
         <FlatList 
-          data={ITEMS}
+          data={items}
           keyExtractor={(item) => item.id}
           renderItem={({item}) => (
             <Item 
