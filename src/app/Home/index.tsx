@@ -9,6 +9,7 @@ import { Filter } from "@/components/Filter"
 import { styles } from "./styles"
 import { FilterStatus } from "@/types/FilterStatus"
 import { itemsStorage, ItemStorage } from "@/storage/itemsStorage"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 const FILTER_STATUS: FilterStatus[] = [FilterStatus.PENDING, FilterStatus.DONE]
 
@@ -56,6 +57,23 @@ export function Home() {
     }
   }
 
+  function handleClear(){
+    Alert.alert("Limpar", "Deseja remover todos?", [
+      { text: "Não", style: "cancel" },
+      { text: "Sim", onPress: () => onClear()}
+    ])
+  }
+
+  async function onClear() {
+    try {
+      await itemsStorage.clear()
+      setItems([])
+    } catch (error) {
+      console.log(error)
+      Alert.alert("Erro", "Não foi possível remover todos os itens")
+    }
+  }
+
   useEffect(() => {
     itemsByStatus()
   }, [filter])
@@ -83,7 +101,7 @@ export function Home() {
             />
           ))}
 
-          <TouchableOpacity style={styles.clearButton}>
+          <TouchableOpacity style={styles.clearButton} onPress={handleClear}>
             <Text style={styles.clearText}>Limpar</Text>
           </TouchableOpacity>
         </View>
