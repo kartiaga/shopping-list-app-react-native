@@ -74,6 +74,16 @@ export function Home() {
     }
   }
 
+  async function handleTouggleItemStatus(id: string){
+    try {
+      await itemsStorage.touggleStatus(id)
+      await itemsByStatus()
+    } catch (error) {
+      console.log(error)
+      Alert.alert("Erro", " Não foi possível atualizar o status.")
+    }
+  }
+
   useEffect(() => {
     itemsByStatus()
   }, [filter])
@@ -112,7 +122,7 @@ export function Home() {
           renderItem={({item}) => (
             <Item 
                 data={item}
-                onStatus={() => console.log("Muda status")}
+                onStatus={() => handleTouggleItemStatus(item.id)}
                 onRemove={() => handleRemove(item.id)}
               />
           )}
