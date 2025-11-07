@@ -9,7 +9,6 @@ import { Filter } from "@/components/Filter"
 import { styles } from "./styles"
 import { FilterStatus } from "@/types/FilterStatus"
 import { itemsStorage, ItemStorage } from "@/storage/itemsStorage"
-import AsyncStorage from "@react-native-async-storage/async-storage"
 
 const FILTER_STATUS: FilterStatus[] = [FilterStatus.PENDING, FilterStatus.DONE]
 
