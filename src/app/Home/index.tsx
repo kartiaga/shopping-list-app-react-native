@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { View, Image, Text, TouchableOpacity, FlatList, Alert} from "react-native"
+import { View, Image, Text, TouchableOpacity, FlatList, Alert, KeyboardAvoidingView, Platform} from "react-native"
 
 import { Item } from "@/components/Item"
 import { Input } from "@/components/Input"
@@ -115,21 +115,27 @@ export function Home() {
           </TouchableOpacity>
         </View>
 
-        <FlatList 
-          data={items}
-          keyExtractor={(item) => item.id}
-          renderItem={({item}) => (
-            <Item 
-                data={item}
-                onStatus={() => handleTouggleItemStatus(item.id)}
-                onRemove={() => handleRemove(item.id)}
-              />
-          )}
-          showsVerticalScrollIndicator={false}
-          ItemSeparatorComponent={() => <View style={styles.separator}/>}
-          contentContainerStyle={styles.listContent}
-          ListEmptyComponent={() => <Text style={styles.empty}>Nenhum item aqui.</Text>}
-        />
+        <KeyboardAvoidingView
+          style={{flex: 1}}
+          behavior={Platform.OS === "ios"? "padding": "height"}
+          keyboardVerticalOffset={220}
+        >
+          <FlatList 
+            data={items}
+            keyExtractor={(item) => item.id}
+            renderItem={({item}) => (
+              <Item 
+                  data={item}
+                  onStatus={() => handleTouggleItemStatus(item.id)}
+                  onRemove={() => handleRemove(item.id)}
+                />
+            )}
+            showsVerticalScrollIndicator={false}
+            ItemSeparatorComponent={() => <View style={styles.separator}/>}
+            contentContainerStyle={styles.listContent}
+            ListEmptyComponent={() => <Text style={styles.empty}>Nenhum item aqui.</Text>}
+          />
+        </KeyboardAvoidingView>
         
       </View>
     </View>
