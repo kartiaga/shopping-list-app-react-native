@@ -6,7 +6,8 @@ const ITEMS_STORAGE_KEY = "@comprar:items"
 export type ItemStorage = {
     id: string,
     status: FilterStatus,
-    description: string
+    description: string,
+    quantity: number
 }
 
 async function get(): Promise<ItemStorage[]>{
@@ -70,11 +71,26 @@ async function touggleStatus(id: string): Promise<void>{
     await save(updatedItems)
 }
 
+async function changeQuantity(id: string, newQuantity: number){
+    const items = await itemsStorage.get();
+    const updatedItems = items.map((item) => {
+        if (item.id === id) {
+            return {
+                ...item,
+                quantity: newQuantity, 
+            };
+        }
+        return item;
+    });
+    await save(updatedItems);
+}
+
 export const itemsStorage = {
     get,
     getByStatus,
     add,
     remove,
     clear,
-    touggleStatus
+    touggleStatus,
+    changeQuantity,
 }

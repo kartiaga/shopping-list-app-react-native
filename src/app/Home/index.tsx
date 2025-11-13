@@ -25,7 +25,8 @@ export function Home() {
     const newItem = {
       id: Math.random().toString(36).substring(2),
       description,
-      status: FilterStatus.PENDING
+      status: FilterStatus.PENDING,
+      quantity: 1
     }
     
     await itemsStorage.add(newItem)
@@ -79,7 +80,16 @@ export function Home() {
       await itemsByStatus()
     } catch (error) {
       console.log(error)
-      Alert.alert("Erro", " Não foi possível atualizar o status.")
+      Alert.alert("Erro", "Não foi possível atualizar o status.")
+    }
+  }
+
+  async function handleQuantity(id: string, quantity: number){
+    try {
+      await itemsStorage.changeQuantity(id, quantity);
+    } catch (error) {
+      console.log(error)
+      Alert.alert("Erro", "Não foi possível atualizar a quantidade.")
     }
   }
 
@@ -128,6 +138,7 @@ export function Home() {
                   data={item}
                   onStatus={() => handleTouggleItemStatus(item.id)}
                   onRemove={() => handleRemove(item.id)}
+                  onQuantity={(quantity) => handleQuantity(item.id, quantity)}
                 />
             )}
             showsVerticalScrollIndicator={false}
