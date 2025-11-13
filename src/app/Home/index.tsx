@@ -17,6 +17,21 @@ export function Home() {
   let [description, setDescription] = useState("")
   const [items, setItems] = useState<ItemStorage[]>([])
 
+  const calculateGrandTotal = () => {
+    // Reduce the items array to a single number (the sum of all item totals)
+    const total = items.reduce((sum, item) => {
+        // Ensure price is treated as a number
+        const price = item.price || 0; 
+        
+        // Add the total for the current item (quantity * price)
+        return sum + (item.quantity * price);
+    }, 0); // Start the sum at 0
+
+    // Format the total to a currency string (R$ 0,00)
+    // toFixed(2) ensures two decimal places. replace('.', ',') converts to Brazilian format.
+    return `R$ ${total.toFixed(2).replace('.', ',')}`;
+  };
+
   async function handleAdd(){
     if (!description.trim()){
       return Alert.alert("Adicionar", "Informe a descrição para adicionar")
@@ -26,7 +41,8 @@ export function Home() {
       id: Math.random().toString(36).substring(2),
       description,
       status: FilterStatus.PENDING,
-      quantity: 1
+      quantity: 1,
+      price: 0
     }
     
     await itemsStorage.add(newItem)
@@ -92,6 +108,16 @@ export function Home() {
       Alert.alert("Erro", "Não foi possível atualizar a quantidade.")
     }
   }
+  
+  async function handlePrice(id: string, price: number) {
+    try {
+      await itemsStorage.changePrice(id, price);
+      await itemsByStatus()
+    } catch (error) {
+      console.log(error)
+      Alert.alert("Erro", "Não foi possível atualizar o preço.")
+    }
+  }
 
   useEffect(() => {
     itemsByStatus()
@@ -110,19 +136,28 @@ export function Home() {
       </View>
 
       <View style={styles.content}>
-        <View style={styles.header}>
-          {FILTER_STATUS.map((status) => (
-            <Filter 
-              key={status} 
-              status={status} 
-              isActive={status===filter}
-              onPress={() => setFilter(status)}
-            />
-          ))}
+        <View>
+          <View style={styles.header}>
+            {FILTER_STATUS.map((status) => (
+              <Filter 
+                key={status} 
+                status={status} 
+                isActive={status===filter}
+                onPress={() => setFilter(status)}
+              />
+            ))}
 
-          <TouchableOpacity style={styles.clearButton} onPress={handleClear}>
-            <Text style={styles.clearText}>Limpar</Text>
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.clearButton} onPress={handleClear}>
+              <Text style={styles.clearText}>Limpar</Text>
+            </TouchableOpacity>
+          </View>
+          {filter === FilterStatus.DONE && (
+            <Text style={{ fontSize: 16, fontWeight: 'bold', marginVertical: 10, paddingTop: 10, textAlign: "left", color: "#006caaff"}}>
+                Total: {calculateGrandTotal()}
+            </Text>
+          )}
+          
+
         </View>
 
         <KeyboardAvoidingView
@@ -139,6 +174,7 @@ export function Home() {
                   onStatus={() => handleTouggleItemStatus(item.id)}
                   onRemove={() => handleRemove(item.id)}
                   onQuantity={(quantity) => handleQuantity(item.id, quantity)}
+                  onPrice={(price) => handlePrice(item.id, price)}
                 />
             )}
             showsVerticalScrollIndicator={false}

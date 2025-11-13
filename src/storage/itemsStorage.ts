@@ -7,7 +7,8 @@ export type ItemStorage = {
     id: string,
     status: FilterStatus,
     description: string,
-    quantity: number
+    quantity: number,
+    price: number
 }
 
 async function get(): Promise<ItemStorage[]>{
@@ -85,6 +86,20 @@ async function changeQuantity(id: string, newQuantity: number){
     await save(updatedItems);
 }
 
+async function changePrice(id: string, newPrice: number){
+    const items = await itemsStorage.get();
+    const updatedItems = items.map((item) => {
+        if (item.id === id) {
+            return {
+                ...item,
+                price: newPrice, 
+            };
+        }
+        return item;
+    });
+    await save(updatedItems);
+}
+
 export const itemsStorage = {
     get,
     getByStatus,
@@ -93,4 +108,5 @@ export const itemsStorage = {
     clear,
     touggleStatus,
     changeQuantity,
+    changePrice
 }

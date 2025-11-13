@@ -8,10 +8,14 @@ import { FilterStatus } from "@/types/FilterStatus";
 import { useState } from "react";
 import { Dropdown } from "react-native-element-dropdown";
 
+import { InputPrice } from "../InputPrice";
+
 type ItemData = {
+    id: string, // 🎯 ADDED: The unique identifier for the item
     status: FilterStatus,
     description: string,
-    quantity: number
+    quantity: number,
+    price: number
 }
 
 type Props = {
@@ -19,15 +23,17 @@ type Props = {
     onRemove: () => void,
     onStatus: () => void,
     onQuantity: (quantity: number) => void
+    onPrice: (price: number) => void
 }
 
-export function Item({data, onStatus, onRemove, onQuantity}: Props){
-    const [quantity, setQuantity] = useState(data.quantity);
+export function Item({data, onStatus, onRemove, onQuantity, onPrice}: Props){
 
     const numeros = Array.from({ length: 20 }, (_, i) => ({
         label: `${i + 1}`,
         value: i + 1,
     }));
+
+    const total = (data.price * data.quantity).toFixed(2);
 
     return (
         <View style={{flexDirection: "row", flex:1, gap:12}}>
@@ -44,9 +50,8 @@ export function Item({data, onStatus, onRemove, onQuantity}: Props){
                         <Trash2 size={18} color={"#828282"}/>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.container}>
-                    
-                    <Text style={{fontSize: 14}}>Quantidade:</Text>
+                <View style={styles.container}> 
+                    <Text style={{fontSize: 14}}>Uni:</Text>
                     <Dropdown
                         style={{
                             marginLeft: 2,
@@ -57,9 +62,8 @@ export function Item({data, onStatus, onRemove, onQuantity}: Props){
                             borderRadius: 8,
                             paddingHorizontal: 8,
                         }}
-                        value={quantity}
+                        value={data.quantity}
                         onChange={(item) => {
-                            setQuantity(item.value);
                             onQuantity(item.value);
                         }}
                         data={numeros}
@@ -69,6 +73,10 @@ export function Item({data, onStatus, onRemove, onQuantity}: Props){
                         placeholderStyle={{ fontSize: 14, color: "#999" }}
                         selectedTextStyle={{ fontSize: 14, color: "#000" }}
                     />
+
+                    <InputPrice onPrice={onPrice} price={data.price}/>
+                    <Text style={{textAlign: "right"}}>Total: R$ {total}</Text>
+                    
                     
                     {/* <TouchableOpacity onPress={onRemove}>
                         <SquarePen style={{}} size={18} color={"#828282"}/>
