@@ -75,7 +75,7 @@ export function Item({data, onStatus, onRemove, onQuantity, onPrice}: Props){
                     />
 
                     <InputPrice onPrice={onPrice} price={data.price}/>
-                    <Text style={{textAlign: "right"}}>Total: R$ {total}</Text>
+                    <Text style={{textAlign: "right", flex: 1}}>Total: R$ {total}</Text>
                     
                     
                     {/* <TouchableOpacity onPress={onRemove}>

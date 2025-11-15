@@ -48,7 +48,7 @@ export function Home() {
     await itemsStorage.add(newItem)
     await itemsByStatus()
 
-    Alert.alert("Adicionado", `Adicionado ${description}`);
+    // Alert.alert("Adicionado", `Adicionado ${description}`);
     setFilter(FilterStatus.PENDING)
     setDescription("")
   }
@@ -67,6 +67,7 @@ export function Home() {
     try {
       await itemsStorage.remove(id)
       await itemsByStatus()
+      Alert.alert("Removido", `Removido ${description}`);
     } catch(error){
       console.log(error)
       Alert.alert("Erro", "Não foi possível remover")
@@ -103,6 +104,7 @@ export function Home() {
   async function handleQuantity(id: string, quantity: number){
     try {
       await itemsStorage.changeQuantity(id, quantity);
+      await itemsByStatus()
     } catch (error) {
       console.log(error)
       Alert.alert("Erro", "Não foi possível atualizar a quantidade.")
