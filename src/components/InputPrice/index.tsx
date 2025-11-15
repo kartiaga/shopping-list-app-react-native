@@ -71,6 +71,8 @@ export function InputPrice({ price, onPrice }: Props) {
                 borderRadius: 8,
                 paddingHorizontal: 8,
                 textAlign: 'left', 
+                textAlignVertical: "center",
+                paddingVertical: 0,
             }}
             placeholder="R$ 0,00"
             keyboardType="numeric" 

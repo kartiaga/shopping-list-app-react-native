@@ -36,7 +36,7 @@ async function save(items: ItemStorage[]): Promise<void>{
 async function add(newItem: ItemStorage): Promise<ItemStorage[]>{
     const items = await get()
 
-    const updatedItems = [...items, newItem]
+    const updatedItems = [newItem, ...items]
     await save(updatedItems)
     
     return updatedItems
