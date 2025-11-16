@@ -75,7 +75,11 @@ export function Item({data, onStatus, onRemove, onQuantity, onPrice}: Props){
                     />
 
                     <InputPrice onPrice={onPrice} price={data.price}/>
-                    <Text style={{textAlign: "right", flex: 1}}>Total: R$ {total}</Text>
+
+                    <View style={{flex: 1, flexDirection: "column", alignItems: "flex-end"}}>
+                        <Text style={{fontSize: 14 , fontWeight: 700, color: "#4e4e4eff"}}>Total:</Text>
+                        <Text style={{textAlign: "right", flex: 1, fontSize: 15 , fontWeight: 700, color: "#1d6100ff"}}>R$ {total}</Text>
+                    </View>
                     
                     
                     {/* <TouchableOpacity onPress={onRemove}>

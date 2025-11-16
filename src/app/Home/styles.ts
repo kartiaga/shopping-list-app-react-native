@@ -8,14 +8,14 @@ export const styles = StyleSheet.create({
         paddingTop: 62
     },
     logo: {
-        height: 34,
-        width: 134,
+        height: 94,
+        width: 94,
     },
     form: {
         width: "100%",
         paddingHorizontal: 16,
         gap: 7,
-        marginTop: 42
+        marginTop: 16
     },
     content: {
         flex: 1,
@@ -24,7 +24,6 @@ export const styles = StyleSheet.create({
         borderTopLeftRadius: 24,
         borderTopRightRadius: 24,
         padding: 24,
-        paddingTop: 32,
         marginTop: 24
     },
     header: {
@@ -33,7 +32,6 @@ export const styles = StyleSheet.create({
         gap: 12,
         borderBottomWidth: 1,
         borderBottomColor: "#E4E6EC",
-        paddingBottom: 12
     },
     clearButton: {
         marginLeft: "auto"

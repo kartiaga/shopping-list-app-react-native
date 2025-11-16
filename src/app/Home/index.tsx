@@ -154,7 +154,7 @@ export function Home() {
             </TouchableOpacity>
           </View>
           {filter === FilterStatus.DONE && (
-            <Text style={{ fontSize: 16, fontWeight: 'bold', marginVertical: 10, paddingTop: 10, textAlign: "left", color: "#006caaff"}}>
+            <Text style={{ fontSize: 16, fontWeight: 'bold', marginVertical: 10, paddingTop: 10, textAlign: "left", color: "#004f1aff"}}>
                 Total: {calculateGrandTotal()}
             </Text>
           )}
