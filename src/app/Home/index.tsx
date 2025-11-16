@@ -130,7 +130,7 @@ export function Home() {
 
       <View style={styles.form}>
         <Input 
-          placeholder="Nome completo" 
+          placeholder="O que você precisa comprar?" 
           onChangeText={setDescription}
           value={description}
         />
