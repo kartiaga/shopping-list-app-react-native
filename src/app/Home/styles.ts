@@ -34,12 +34,13 @@ export const styles = StyleSheet.create({
         borderBottomColor: "#E4E6EC",
     },
     clearButton: {
-        marginLeft: "auto"
+        marginLeft: "auto",
+        justifyContent: "center"
     },
     clearText: {
         fontSize: 12,
         color: "#828282",
-        fontWeight: 600
+        fontWeight: 600,
     },
     separator: {
         width: "100%",

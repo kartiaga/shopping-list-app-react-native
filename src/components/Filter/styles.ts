@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
         alignItems: "center",
         gap: 5,
         paddingTop: 12,
-        paddingBottom: 12,
+        paddingBottom: 16,
     },
     title: {
         fontSize: 12,
